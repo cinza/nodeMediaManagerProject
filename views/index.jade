@@ -1,0 +1,163 @@
+-monitors = monitors || []
+-models = models || []
+-friendlyError = friendlyError
+
+extends layout
+
+block content
+	section.wrapper
+		if friendlyError
+			section#errorMessage
+				span #{friendlyError}
+		header
+			div#headerWrapper
+				a(href="#").logo logo		
+					img(src='../images/ICON_logo.png')
+				nav#searchNav
+					input#search(value="" type="search" placeholder="Search")
+					a(href="#" title="")#infoNav
+		section#home.threeCols
+			section.colLeft
+				h3  Monitores
+				h3 Playlists
+				article.cont
+					if monitors
+						for monitor in monitors
+							div.box
+								div.col
+									p.monitor
+										if monitor.status == 'i'
+											a( id="#{monitor.id}" class="inactive") #{monitor.name}
+										else
+											a( id="#{monitor.id}") #{monitor.name}
+								div.col
+									if monitor.playlists
+										for playlist in monitor.playlists
+											ul.playlist
+												li 
+													if playlist.status == 'i'
+														a( id="#{playlist.id}" class="inactive") #{playlist.name}
+													else
+														a( id="#{playlist.id}") #{playlist.name}
+			aside.colLeft
+				h3 Estado
+				article.cont
+					div.status.update
+						span
+						p Actualizado
+					div.status.noUse
+						span
+						p Sin Uso
+					div.status.noUse
+						span
+						p Sin Uso
+					div.status.none
+						span 3
+						p /
+						span 5
+					div.status.noUse
+						span
+						p Sin Uso
+					div.status.update
+						span
+						p Actualizado
+					div.status.update
+						span
+						p Actualizado
+					div.status.update
+						span
+						p Actualizado
+
+			aside.colRight
+				h3 En Línea
+				article.cont
+					div.on
+						span
+					div.off
+						span
+					div.off
+						span
+					div.on
+						span
+					div.off
+						span
+					div.on
+						span
+					div.on
+						span
+					div.on
+						span
+	footer
+		div#footerCont
+			section.editScreen
+				a(href="#").add.monitor
+				a(href="#").less
+				a(href="#" title="Por favor seleccione un monitor").edit.monitor
+
+			section.editPlaylist
+				a(href="#").add.playlist
+				a(href="#").less
+				a(href="#" title="Por favor seleccione un playlist").edit.playlist
+				a(href="#").delete
+			section.statusHold.twoCols
+				div.col
+					ul
+						li.status.update 
+							span 
+							p Actualizado
+						li.status.noUse 
+							span 
+							p sin uso
+						li.status.none 
+							span 3
+							p /
+							span 5
+
+				div.col.status
+					ul
+						li.status.update 
+							span 5
+							p Encendido
+						li.status.none
+							span 3
+							p Apagado
+	div.shade
+	section.popUp
+		div.monitor.hideThis
+			h6 Agregar Monitor
+			form(method="post" action="/monitor" id="monitorForm" class="formValidation")
+				input(type="hidden" id="selectedMonitor" name='monitor[id]')
+				input(type="hidden" id="monitorStatus" name="monitor[type]")
+				input(type='text' placeholder='Nombre' name="monitor[name]" required)
+				textarea(placeholder='Descripción' name="monitor[description]")
+				p Modelo 
+					select(name="monitor[idmodel]")
+						if models
+							for model in models
+								option(name="#{model.id}" value="#{model.id}" required) #{model.name}
+				input(type="submit").save
+				//a(href="#").save
+		div.playlist.hideThis
+			h6 Agregar Playlist
+			form(method="post" action="/playlist" id="playlistForm" class="formValidation")
+				input(type="hidden" id="selectedMoId" name='playlist[idmonitor]')
+				input(type="hidden" id="selectedPlaylist" name='playlist[id]')
+				input(type="hidden" id="selectedPlaylistDirectory" name='playlist[iddirectory]')
+				input(type="hidden" id="playlistStatus" name="playlist[type]")
+				input(type='text' placeholder='Nombre' name="playlist[name]" required)
+				textarea(placeholder='Descripción' name="playlist[description]")
+				p.url 
+					input(type="url" id="#urlName" name='directory[url]' readonly)
+				p Fecha de inicio: 
+					input(type="text" class="datepicker" name='playlist[startdate]' required)
+				p Fecha de fin: 
+					input(type="text" class="datepicker" name='playlist[finishdate]' required)
+				
+				input(type="submit").save
+
+
+
+
+
+
+				
